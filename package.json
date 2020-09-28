@@ -1,0 +1,33 @@
+{
+  "name": "server-allugator",
+  "version": "1.0.0",
+  "description": "Node.js API",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && node dist/src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrunoCesarAngst/server-allugator.git"
+  },
+  "keywords": [
+    "node.js",
+    "api"
+  ],
+  "author": "brunocesarangst",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrunoCesarAngst/server-allugator/issues"
+  },
+  "homepage": "https://github.com/BrunoCesarAngst/server-allugator#readme",
+  "devDependencies": {
+    "@types/module-alias": "^2.0.0",
+    "@types/node": "^14.11.2",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.2"
+  }
+}
