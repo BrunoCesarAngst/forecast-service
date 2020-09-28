@@ -1,6 +1,8 @@
 import { InternalError } from '@src/util/errors/internal-error';
 import { AxiosStatic } from 'axios';
 
+import config, { IConfig } from 'config';
+
 export interface StormGlassPointSource {
   [key: string]: number;
 }
@@ -47,6 +49,10 @@ export class StormGlassResponseError extends InternalError {
   }
 }
 
+const stormGlassResourceConfig: IConfig = config.get(
+  'App.resources.stormGlass'
+);
+
 export class StormGlass {
   readonly stormGlassApiParams =
     'swellDirection,swellHeight,swellPeriod,waveDirection,waveHeight,windDirection,windSpeed';
@@ -56,20 +62,26 @@ export class StormGlass {
   constructor(protected request: AxiosStatic) {}
 
   public async fetchPoints(lat: number, lng: number): Promise<ForcastPoint[]> {
+    // console.log(stormGlassResourceConfig);
     try {
-      const response = await this.request.get<StormGlassForecastResponse>(`
-        https://api.stormglass.io/v2/weather/point
-        ?params=${this.stormGlassApiParams}
-        &source=${this.stormGlassApiSource}
-        &end=1592113802
-        &lat=${lat}
-        &lng=${lng},
-        {
-          headers: {
-            Authorization: 'fake token',
+      const response = await this.request.get<StormGlassForecastResponse>(
+        `
+          // https://api.stormglass.io/v2/weather/point
+          ${stormGlassResourceConfig.get('apiUrl')}/weather/point
+          ?params=${this.stormGlassApiParams}
+          &source=${this.stormGlassApiSource}
+          &end=1592113802
+          &lat=${lat}
+          &lng=${lng},
+          {
+            headers: {
+              Authorization: stormGlassResourceConfig.get(
+                'apiToken'
+              ),
+            }
           }
-        }
-        `);
+        `
+      );
       return this.normalizeResponse(response.data);
     } catch (err) {
       if (err.response && err.response.status) {
