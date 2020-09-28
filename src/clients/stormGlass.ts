@@ -45,7 +45,12 @@ export class StormGlass {
       &source=${this.stormGlassApiSource}
       &end=1592113802
       &lat=${lat}
-      &lng=${lng}
+      &lng=${lng},
+      {
+        headers: {
+          Authorization: 'fake token',
+        }
+      }
       `);
     return this.normalizeResponse(response.data);
   }
