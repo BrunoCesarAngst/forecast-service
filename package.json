@@ -1,5 +1,5 @@
 {
-  "name": "server-allugator",
+  "name": "forecast-service",
   "version": "1.0.0",
   "description": "Node.js API",
   "main": "index.js",
