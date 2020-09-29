@@ -21,7 +21,7 @@ describe('StormGlass client', () => {
 
     mockedRequest.get.mockResolvedValue({
       data: stormGlassWeather3HoursFixture,
-    } as HTTPUtil.Request);
+    } as HTTPUtil.Response);
 
     const stormGlass = new StormGlass(mockedRequest);
     const response = await stormGlass.fetchPoints(lat, lng);
@@ -43,7 +43,7 @@ describe('StormGlass client', () => {
     };
     mockedRequest.get.mockResolvedValue({
       data: incompleteResponse,
-    } as HTTPUtil.Request);
+    } as HTTPUtil.Response);
 
     // MockedCacheUtil.get.mockReturnValue(undefined);
 
