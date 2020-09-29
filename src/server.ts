@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import { ForcastController } from './controllers/forcast';
 import { Application } from 'express';
 import * as database from '@src/database'
+import { BeachesController } from './controllers/beaches';
 
 export class SetupServer extends Server {
   constructor(private port = 3000) {
@@ -22,8 +23,9 @@ export class SetupServer extends Server {
 
   private SetupControllers(): void {
     const forcastController = new ForcastController();
+    const beachesController = new BeachesController();
 
-    this.addControllers([forcastController]);
+    this.addControllers([forcastController, beachesController]);
   }
 
   private async databaseSetup(): Promise<void> {
