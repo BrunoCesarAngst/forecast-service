@@ -1,14 +1,21 @@
 import { StormGlass } from '@src/clients/stormGlass';
 import stormGlassNormalized3HoursFixture from '@test/fixtures/stormglass_normalized_response_3_hours.json';
-import { Forecast, Beach, BeachPosition } from '../forecast';
+import {
+  Forecast,
+  Beach,
+  BeachPosition,
+  ForecastProcessingInternalError,
+} from '../forecast';
 
 jest.mock('@src/clients/stormGlass');
 
 describe('Forcast Service', () => {
+  const mockedStormGlassService = new StormGlass() as jest.Mocked<StormGlass>;
+
   it('should return the forecast for a list of beaches', async () => {
-    StormGlass.prototype.fetchPoints = jest
-      .fn()
-      .mockResolvedValue(stormGlassNormalized3HoursFixture);
+    mockedStormGlassService.fetchPoints.mockResolvedValue(
+      stormGlassNormalized3HoursFixture
+    );
 
     const beaches: Beach[] = [
       {
@@ -83,8 +90,35 @@ describe('Forcast Service', () => {
       },
     ];
 
-    const forcast = new Forecast(new StormGlass());
+    const forcast = new Forecast(mockedStormGlassService);
     const beachesWithRating = await forcast.processForcastForBeaches(beaches);
     expect(beachesWithRating).toEqual(expectedResponse);
+  });
+
+  it('should return an empty list when the beaches array is empty', async () => {
+    const forecast = new Forecast();
+    const response = await forecast.processForcastForBeaches([]);
+    expect(response).toEqual([]);
+  });
+
+  it('should throw internal processing error when something goes wrong during the rating processing', async () => {
+    const beaches: Beach[] = [
+      {
+        lat: -33.792726,
+        lng: 151.289824,
+        name: 'Manly',
+        position: BeachPosition.E,
+        user: 'some-id',
+      },
+    ];
+
+    mockedStormGlassService.fetchPoints.mockRejectedValue(
+      'Error fetching data'
+    );
+
+    const forecast = new Forecast(mockedStormGlassService);
+    await expect(forecast.processForcastForBeaches(beaches)).rejects.toThrow(
+      ForecastProcessingInternalError
+    );
   });
 });
