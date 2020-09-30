@@ -12,8 +12,12 @@ export class ForcastController {
     _: Request,
     res: Response
   ): Promise<void> {
-    const beaches = await Beach.find({});
-    const forcastData = await forecast.processForcastForBeaches(beaches);
-    res.status(200).send(forcastData);
+    try {
+      const beaches = await Beach.find({});
+      const forcastData = await forecast.processForcastForBeaches(beaches);
+      res.status(200).send(forcastData);
+    } catch (error) {
+      res.status(500).send({ error: 'Something went wrong' });
+    }
   }
 }
