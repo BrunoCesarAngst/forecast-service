@@ -4,7 +4,7 @@ export class InternalError extends Error {
     protected code: number = 500,
     protected description?: string
   ) {
-    super(message)
+    super(message);
 
     this.name = this.constructor.name;
 

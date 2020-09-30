@@ -13,7 +13,6 @@ export interface Beach {
   position: BeachPosition;
   lat: number;
   lng: number;
-  user: string;
 }
 
 export interface TimeForecast {
@@ -23,7 +22,7 @@ export interface TimeForecast {
 
 export class ForecastProcessingInternalError extends InternalError {
   constructor(message: string) {
-    super('Unexpected error during the forecast processing: ${message}');
+    super(`Unexpected error during the forecast processing: ${message}`);
   }
 }
 
@@ -43,8 +42,8 @@ export class Forecast {
         pointsWithCorrectSources.push(...enrichedBeachData);
       }
       return this.mapForecastByData(pointsWithCorrectSources);
-    } catch (err) {
-      throw new ForecastProcessingInternalError(err.message);
+    } catch (error) {
+      throw new ForecastProcessingInternalError(error.message);
     }
   }
 
