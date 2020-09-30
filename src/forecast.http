@@ -1,0 +1,68 @@
+@baseUrl = http://localhost:3000
+
+# Beach
+# Create
+POST {{baseUrl}}/beaches HTTP/1.1
+Content-Type: application/json
+
+{
+  "lat": -33.792726,
+  "lng": 151.289824,
+  "name": "Manly",
+  "position": "E"
+}
+###
+
+# Forecast
+# Show
+GET {{baseUrl}}/forecast HTTP/1.1
+
+###
+
+# Sessions
+# Create
+POST {{baseUrl}}/sessions HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "abc@example.com",
+  "password": "123"
+}
+
+###
+# ForgotPassword
+# Create
+POST {{baseUrl}}/passwords HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "abc@example.com",
+  "redirect_url": "http://www.meusys.com/resetar_senha"
+}
+
+###
+# Update
+PUT {{baseUrl}}/passwords HTTP/1.1
+Content-Type: application/json
+
+{
+  "token": "666a299529166c75eb85",
+  "password": "123"
+}
+
+###
+# Files
+# Create
+POST {{baseUrl}}/files HTTP/1.1
+Content-Type: multipart/form-data; boundary=MyBoundary
+
+--MyBoundary
+Content-Disposition: form-data; name="file"; filename="caminhoCritico.png"
+Content-Type: image/png
+
+< ./../img/caminhoCritico.png
+--MyBoundary--
+
+###
+# Show
+GET {{baseUrl}}/files/1 HTTP/1.1.
