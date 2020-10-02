@@ -2,6 +2,7 @@ import logger from '@src/logger';
 import { CUSTOM_VALIDATION } from '@src/models/user';
 import { Response } from 'express';
 import mongoose from 'mongoose';
+import ApiError, { APIError } from '../util/errors/api-error';
 
 export abstract class BaseController {
   protected sendCreateUpdateErrorResponse(
@@ -12,10 +13,17 @@ export abstract class BaseController {
       const clientError = this.handleClienteError(error);
       res
         .status(clientError.code)
-        .send({ code: clientError.code, error: clientError.error });
+        .send(
+          ApiError.format({
+            code: clientError.code,
+            message: clientError.error,
+          })
+        );
     } else {
-      logger.error(error)
-      res.status(500).send({ code: 500, error: 'Something want wrong!' });
+      logger.error(error);
+      res
+        .status(500)
+        .send(ApiError.format({ code: 500, message: 'Something want wrong!' }));
     }
   }
 
@@ -29,5 +37,9 @@ export abstract class BaseController {
       return { code: 409, error: error.message };
     }
     return { code: 422, error: error.message };
+  }
+
+  protected sendErrorResponse(res: Response, apiError: APIError): Response {
+    return res.status(apiError.code).send(ApiError.format(apiError));
   }
 }
