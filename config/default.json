@@ -11,7 +11,7 @@
     "resources": {
       "stormGlass": {
         "apiUrl": "https://api.stormglass.io/v2",
-        "apiToken": "do-not-hard-code"
+        "apiToken": "3565b338-034d-11eb-bf74-0242ac130002-3565b43c-034d-11eb-bf74-0242ac130002"
       }
     },
     "logger": {

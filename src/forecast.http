@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
   "name": "Bruno Angst",
-  "email": "mbcangstb@gmail.com",
+  "email": "mbcangst2@gmail.com",
   "password": "1234"
 }
 ###
@@ -20,19 +20,17 @@ POST {{baseUrl}}/users/authenticate HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "mbcangstb@gmail.com",
+  "email": "mbcangst2@gmail.com",
   "password": "1234"
 }
 
-###
-{"name":"Bruno Angst","email":"mbcangst@gmail.com","password":"$2b$10$KQV.izhufs5vdS9Pfo92QOUGgp8xLovrhqq1buA/19xDOpKvuBQVy","id":"5f763187b222c987fe75c0ae","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQnJ1bm8gQW5nc3QiLCJlbWFpbCI6Im1iY2FuZ3N0QGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJEtRVi5pemh1ZnM1dmRTOVBmbzkyUU9VR2dwOHhMb3ZyaHFxMWJ1QS8xOXhET3BLdnVCUVZ5IiwiaWQiOiI1Zjc2MzE4N2IyMjJjOTg3ZmU3NWMwYWUiLCJpYXQiOjE2MDE1ODE3MTgsImV4cCI6MTYwMTU4MTkxOH0._SlShSqY4rWbJO876LMhZYXtOitCIpjWGc2MfQCeSPQ"}
 ###
 
 # Beach
 # Create
 POST {{baseUrl}}/beaches HTTP/1.1
 Content-Type: application/json
-Authorization: {{token}}
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQnJ1bm8gQW5nc3QiLCJlbWFpbCI6Im1iY2FuZ3N0MkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRkQng5UzU0djlkdkFpTGJuTFE5L0Z1aUsxYXZBTkZSczFBTk5zeTNtUnc0MDdjYkc3cHVuUyIsImlkIjoiNWY3NmVjM2I1OTQ1NTAwYjE3NjEwNDFmIiwiaWF0IjoxNjAxNjI5MjQ4LCJleHAiOjE2MDE2Mjk0NDh9.vjexdJL6hZW0MU3QM_C89BSlRAdx1FrVXQr6fxtjZS8
 
 {
   "lat": -33.792726,
