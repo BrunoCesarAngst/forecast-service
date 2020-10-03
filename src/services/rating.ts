@@ -1,4 +1,5 @@
-import { Beach, BeachPosition } from '@src/models/beach';
+import { Beach, CardinalPoints } from '@src/models/beach';
+import { ForecastPoint } from '@src/clients/stormGlass';
 
 const waveHeights = {
   ankleToKnee: {
@@ -18,9 +19,24 @@ const waveHeights = {
 export class Rating {
   constructor(private beach: Beach) {}
 
+  public getRateForPoint(point: ForecastPoint): number {
+    const swellDirection = this.getPositionFromLocation(point.swellDirection);
+    const windDirection = this.getPositionFromLocation(point.windDirection);
+    const windAndWaveRating = this.getRatingBasedOnWindAndWavePositions(
+      swellDirection,
+      windDirection
+    );
+    const swellHeightRating = this.getRatingForSwellSize(point.swellHeight);
+    const swellPeriodRating = this.getRatingForSwellPeriod(point.swellPeriod);
+    const finalRating =
+      (windAndWaveRating + swellHeightRating + swellPeriodRating) / 3;
+
+    return Math.round(finalRating);
+  }
+
   public getRatingBasedOnWindAndWavePositions(
-    wavePosition: BeachPosition,
-    windPosition: BeachPosition
+    wavePosition: CardinalPoints,
+    windPosition: CardinalPoints
   ): number {
     if (wavePosition === windPosition) {
       return 1;
@@ -63,31 +79,39 @@ export class Rating {
     return 1;
   }
 
-  public getPositionFromLocation(coordinates: number): BeachPosition {
-    if(coordinates >= 310 || (coordinates < 50 && coordinates >= 0)) {return BeachPosition.N}
-    if(coordinates >= 50 && coordinates < 120) {return BeachPosition.E}
-    if(coordinates >= 120 && coordinates < 220) {return BeachPosition.S}
-    if(coordinates >= 220 && coordinates < 310) {return BeachPosition.W}
-    return BeachPosition.E;
+  public getPositionFromLocation(coordinates: number): CardinalPoints {
+    if (coordinates >= 310 || (coordinates < 50 && coordinates >= 0)) {
+      return CardinalPoints.N;
+    }
+    if (coordinates >= 50 && coordinates < 120) {
+      return CardinalPoints.E;
+    }
+    if (coordinates >= 120 && coordinates < 220) {
+      return CardinalPoints.S;
+    }
+    if (coordinates >= 220 && coordinates < 310) {
+      return CardinalPoints.W;
+    }
+    return CardinalPoints.E;
   }
 
   private isWindOffShore(
-    wavePosition: BeachPosition,
-    windPosition: BeachPosition
+    wavePosition: CardinalPoints,
+    windPosition: CardinalPoints
   ): boolean {
     return (
-      (wavePosition === BeachPosition.N &&
-        windPosition === BeachPosition.S &&
-        this.beach.position === BeachPosition.N) ||
-      (wavePosition === BeachPosition.S &&
-        windPosition === BeachPosition.N &&
-        this.beach.position === BeachPosition.S) ||
-      (wavePosition === BeachPosition.E &&
-        windPosition === BeachPosition.W &&
-        this.beach.position === BeachPosition.E) ||
-      (wavePosition === BeachPosition.W &&
-        windPosition === BeachPosition.E &&
-        this.beach.position === BeachPosition.W)
+      (wavePosition === CardinalPoints.N &&
+        windPosition === CardinalPoints.S &&
+        this.beach.position === CardinalPoints.N) ||
+      (wavePosition === CardinalPoints.S &&
+        windPosition === CardinalPoints.N &&
+        this.beach.position === CardinalPoints.S) ||
+      (wavePosition === CardinalPoints.E &&
+        windPosition === CardinalPoints.W &&
+        this.beach.position === CardinalPoints.E) ||
+      (wavePosition === CardinalPoints.W &&
+        windPosition === CardinalPoints.E &&
+        this.beach.position === CardinalPoints.W)
     );
   }
 }

@@ -1,4 +1,4 @@
-import { ForcastPoint, StormGlass } from '@src/clients/stormGlass';
+import { ForecastPoint, StormGlass } from '@src/clients/stormGlass';
 import { InternalError } from '@src/util/errors/internal-error';
 import { Beach } from '@src/models/beach';
 import logger from '@src/logger';
@@ -14,7 +14,7 @@ export class ForecastProcessingInternalError extends InternalError {
   }
 }
 
-export interface BeachForecast extends Omit<Beach, 'user'>, ForcastPoint {}
+export interface BeachForecast extends Omit<Beach, 'user'>, ForecastPoint {}
 
 export class Forecast {
   constructor(protected stormGlass = new StormGlass()) {}
@@ -38,7 +38,7 @@ export class Forecast {
   }
 
   private enrichedBeachData(
-    points: ForcastPoint[],
+    points: ForecastPoint[],
     beach: Beach
   ): BeachForecast[] {
     return points.map((e) => ({
